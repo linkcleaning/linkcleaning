@@ -41,7 +41,14 @@ import {
   Camera,
   Upload,
   Edit3,
-  Waves
+  Waves,
+  Heart,
+  Shield,
+  Leaf,
+  Medal,
+  ThumbsUp,
+  Wind,
+  Smile
 } from 'lucide-react';
 
 import { 
@@ -100,8 +107,105 @@ const useStore = () => {
 // --- Specialized Components ---
 
 /**
- * Premium Designed Logo Component
+ * Subtle Background Looping Vacuum
  */
+const BackgroundVacuumLoop: React.FC = () => {
+  return (
+    <div className="fixed bottom-10 left-0 w-full pointer-events-none z-0 opacity-10 overflow-hidden h-32">
+      <div className="absolute animate-vacuum-slide flex items-center gap-4 text-purple-custom">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="rotate-90">
+          <path d="M12 2L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M7 6H17V16C17 18.2091 15.2091 20 13 20H11C8.79086 20 7 18.2091 7 16V6Z" stroke="currentColor" strokeWidth="2"/>
+          <path d="M10 10H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M9 22H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+        <div className="flex gap-1">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="w-1 h-1 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }}></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Interactive Vacuum Cleaner Component
+ */
+const InteractiveVacuum: React.FC = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio('https://assets.mixkit.co/active_storage/sfx/2561/2561-preview.mp3');
+    audioRef.current.loop = true;
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const toggleVacuum = () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().catch(e => console.log("Audio play failed:", e));
+      setIsPlaying(true);
+      setTimeout(() => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        }
+      }, 5000);
+    }
+  };
+
+  return (
+    <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[5] opacity-20 hover:opacity-100 transition-opacity duration-500">
+      <div 
+        onClick={toggleVacuum}
+        className={`pointer-events-auto cursor-pointer group relative flex flex-col items-center justify-center p-8 rounded-full transition-all duration-300 ${isPlaying ? 'scale-110 animate-shake' : 'hover:scale-105'}`}
+      >
+        {isPlaying && (
+          <div className="absolute inset-0 bg-purple-400/20 rounded-full animate-ping"></div>
+        )}
+        
+        <div className={`relative z-10 p-6 rounded-3xl bg-white shadow-2xl border-2 transition-colors ${isPlaying ? 'bg-purple-custom text-white border-purple-400' : 'bg-white text-purple-custom border-purple-100'}`}>
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M7 6H17V16C17 18.2091 15.2091 20 13 20H11C8.79086 20 7 18.2091 7 16V6Z" stroke="currentColor" strokeWidth="2"/>
+            <path d="M10 10H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M9 22H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+          
+          {isPlaying && (
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
+              <Wind size={20} className="text-purple-400 animate-bounce" />
+              <div className="w-1 h-8 bg-gradient-to-b from-purple-400 to-transparent rounded-full animate-pulse"></div>
+            </div>
+          )}
+        </div>
+
+        <div className={`mt-4 px-4 py-2 rounded-xl text-xs font-black tracking-widest transition-all ${isPlaying ? 'bg-purple-custom text-white shadow-lg' : 'bg-white/80 backdrop-blur-md text-slate-500 shadow-sm'}`}>
+          {isPlaying ? '작동 중...' : '프리미엄 파워 케어'}
+        </div>
+        
+        {!isPlaying && (
+          <div className="mt-2 text-[10px] font-bold text-purple-400 animate-pulse bg-white/50 px-2 py-1 rounded-full text-center">
+            클릭하여 성능 체험
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const MainLogo: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'md' }) => {
   const containerClasses = {
     sm: 'w-10 h-10',
@@ -117,19 +221,12 @@ const MainLogo: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'md' }) => {
 
   return (
     <div className={`relative flex items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 shadow-lg overflow-hidden group transition-all duration-500 hover:rotate-6 ${containerClasses[size]}`}>
-      {/* Background Decorative Element */}
       <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_100%)] from-white"></div>
-      
-      {/* Animated Sparkles */}
       <Sparkles 
         size={iconSizes[size]} 
         className="text-white z-10 animate-pulse group-hover:scale-110 transition-transform" 
       />
-      
-      {/* Glowing Border Overlay */}
       <div className="absolute inset-0 border border-white/30 rounded-2xl pointer-events-none group-hover:border-white/60 transition-colors"></div>
-      
-      {/* Bottom Shine Effect */}
       <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white/10 to-transparent"></div>
     </div>
   );
@@ -160,6 +257,9 @@ const SparkleBackground: React.FC = () => {
           <Star size={s.size} fill="white" />
         </div>
       ))}
+      {/* Background Interactive Elements */}
+      <BackgroundVacuumLoop />
+      <InteractiveVacuum />
     </div>
   );
 };
@@ -177,7 +277,7 @@ const LuckyDaysCalendar: React.FC = () => {
               <Calendar size={24} />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-slate-900">2026년 손없는 날 안내</h2>
+              <h2 className="text-2xl font-bold text-slate-900">2026년 <span className="text-purple-custom">손없는 날</span> 안내</h2>
               <p className="text-sm text-slate-500">이사하기 좋은 길일을 확인하고 미리 청소를 예약하세요.</p>
             </div>
           </div>
@@ -203,7 +303,7 @@ const LuckyDaysCalendar: React.FC = () => {
             <div className="flex-1">
               <h3 className="text-3xl font-extrabold text-purple-custom mb-4">{activeMonth} 길일 리스트</h3>
               <p className="text-slate-600 mb-8 leading-relaxed">
-                민속 신앙에서 '손(악귀)'이 활동하지 않는 날로, 이사나 개업 등 중요한 행사를 치르기에 가장 좋은 날들입니다. 
+                민속 신앙에서 <span className="text-slate-900 font-bold">'손(악귀)'</span>이 활동하지 않는 날로, 이사나 개업 등 중요한 행사를 치르기에 가장 좋은 날들입니다. 
                 해당 일자는 예약이 빠르게 마감되오니 조기 예약을 권장드립니다.
               </p>
               <div className="flex flex-wrap gap-4">
@@ -240,6 +340,26 @@ const LuckyDaysCalendar: React.FC = () => {
 const FloatingSideContact: React.FC<{ settings: SiteSettings }> = ({ settings }) => {
   return (
     <div className="fixed right-6 bottom-32 z-50 flex flex-col space-y-4 items-center">
+      {/* Vacuum Character Mascot Above Kakao */}
+      <div className="animate-bob relative flex flex-col items-center group cursor-default mb-2">
+        <div className="relative p-2 bg-white rounded-2xl shadow-xl border-2 border-purple-100 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-white opacity-50"></div>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative z-10 text-purple-custom">
+            <path d="M7 6H17V16C17 18.2091 15.2091 20 13 20H11C8.79086 20 7 18.2091 7 16V6Z" stroke="currentColor" strokeWidth="2"/>
+            <path d="M12 2L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <circle cx="10" cy="11" r="1.5" fill="currentColor" />
+            <circle cx="14" cy="11" r="1.5" fill="currentColor" />
+            <path d="M11 14.5C11 14.5 11.5 15 12 15C12.5 15 13 14.5 13 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+          <div className="absolute -top-1 -right-1">
+            <Sparkles size={12} className="text-yellow-400 animate-pulse" />
+          </div>
+        </div>
+        <div className="absolute -top-8 bg-white px-3 py-1 rounded-full shadow-lg border border-purple-50 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          <span className="text-[10px] font-black text-purple-custom italic">"오늘도 깨끗하게!"</span>
+        </div>
+      </div>
+
       <a 
         href={settings.kakaoLink} 
         target="_blank" 
@@ -273,51 +393,29 @@ const FloatingSideContact: React.FC<{ settings: SiteSettings }> = ({ settings })
   );
 };
 
-const BeforeAfterSlider: React.FC<{ before: string; after: string }> = ({ before, after }) => {
-  const [sliderPos, setSliderPos] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const handleMove = (clientX: number) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percent = (x / rect.width) * 100;
-    setSliderPos(percent);
-  };
-
-  const onMouseDown = () => setIsDragging(true);
-  const onMouseUp = () => setIsDragging(false);
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) handleMove(e.clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    handleMove(e.touches[0].clientX);
-  };
-
+const BeforeAfterDisplay: React.FC<{ before: string; after: string }> = ({ before, after }) => {
   return (
-    <div 
-      ref={containerRef}
-      className="relative w-full h-80 overflow-hidden cursor-col-resize select-none bg-slate-200"
-      onMouseMove={onMouseMove}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseUp}
-      onTouchMove={onTouchMove}
-      onTouchStart={() => setIsDragging(true)}
-      onTouchEnd={() => setIsDragging(false)}
-    >
-      <img src={after} alt="After" className="absolute inset-0 w-full h-full object-cover" />
-      <div className="absolute top-4 right-4 z-10 bg-purple-custom text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg">AFTER</div>
-      <div className="absolute inset-0 w-full h-full overflow-hidden" style={{ width: `${sliderPos}%` }}>
-        <img src={before} alt="Before" className="absolute inset-0 w-full h-full object-cover" style={{ width: `${100 * (100 / sliderPos)}%` }} />
-        <div className="absolute top-4 left-4 z-10 bg-black/60 text-white text-[10px] font-bold px-2 py-1 rounded">BEFORE</div>
-      </div>
-      <div className="absolute top-0 bottom-0 w-1 bg-white shadow-xl z-20 pointer-events-none" style={{ left: `calc(${sliderPos}% - 0.5px)` }}>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-purple-custom rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white transition-transform duration-200" style={{ transform: `translate(-50%, -50%) scale(${isDragging ? 1.2 : 1})` }}>
-          <ChevronsLeftRight size={16} />
+    <div className="grid grid-cols-2 gap-3 p-3 bg-slate-50 border-b border-slate-100">
+      <div className="relative group aspect-[4/3] rounded-2xl overflow-hidden shadow-inner bg-slate-200">
+        <img 
+          src={before} 
+          alt="Before" 
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+        />
+        <div className="absolute top-3 left-3 bg-slate-900/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest">
+          BEFORE
         </div>
+      </div>
+      <div className="relative group aspect-[4/3] rounded-2xl overflow-hidden shadow-md bg-white border-2 border-purple-100">
+        <img 
+          src={after} 
+          alt="After" 
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+        />
+        <div className="absolute top-3 right-3 bg-purple-custom text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+          AFTER
+        </div>
+        <div className="absolute inset-0 border-4 border-purple-custom/5 pointer-events-none rounded-2xl"></div>
       </div>
     </div>
   );
@@ -408,8 +506,6 @@ const Footer: React.FC<{ settings: SiteSettings }> = ({ settings }) => {
   );
 };
 
-// --- Views ---
-
 const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfolio: PortfolioItem[] }> = ({ settings, services, portfolio }) => {
   return (
     <div className="animate-in fade-in duration-700 relative z-10">
@@ -421,9 +517,13 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white w-full text-center">
           <div className="max-w-4xl mx-auto">
             <span className="inline-block px-5 py-2 mb-8 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold tracking-[0.3em] uppercase rounded-full shadow-lg">Jeju Premium Space Management</span>
-            <h1 className="text-4xl md:text-7xl font-extrabold mb-8 leading-[1.15] drop-shadow-2xl">{settings.heroTitle}</h1>
+            <h1 className="text-4xl md:text-7xl font-extrabold mb-8 leading-[1.15] drop-shadow-2xl">
+              <span className="text-sky-300">제주</span>의 자연을 닮은 <span className="text-purple-400">깨끗함</span>, <br className="hidden md:block"/> 
+              공간의 <span className="bg-gradient-to-r from-purple-200 to-white bg-clip-text text-transparent">품격</span>을 깨우다
+            </h1>
             <p className="text-lg md:text-2xl mb-12 text-slate-200 drop-shadow-md max-w-2xl mx-auto leading-relaxed font-light whitespace-pre-line">
-              {settings.heroSubtitle}
+              단순한 청소를 넘어 공간 본연의 가치를 되찾아드리는 <br className="hidden md:block"/>
+              <span className="text-purple-300 font-bold underline decoration-purple-500/50 underline-offset-4">링크클린</span>의 독보적인 <span className="text-white font-medium">프리미엄 케어 솔루션</span>입니다.
             </p>
             <div className="flex justify-center animate-bounce mt-12 opacity-50"><ChevronDown size={32} /></div>
           </div>
@@ -436,7 +536,7 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-purple-custom font-bold tracking-tighter text-sm mb-2 block uppercase">Our Expertise</span>
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">링크클린 핵심 전문 솔루션</h2>
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">링크클린 핵심 <span className="text-purple-custom">전문 솔루션</span></h2>
             <div className="w-16 h-1 bg-purple-custom mx-auto mb-6"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
@@ -466,19 +566,37 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
             ))}
           </div>
 
-          {/* Villa/Regular Management CTA Card - Restored */}
-          <div className="max-w-4xl mx-auto bg-slate-900 p-10 md:p-14 rounded-[3rem] shadow-2xl text-white flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
-            <div className="flex-1">
-              <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0">
-                <Building2 size={32} className="text-purple-400" />
+          <div className="relative max-w-4xl mx-auto overflow-hidden bg-gradient-to-br from-red-600 via-red-700 to-red-900 p-10 md:p-14 rounded-[3rem] shadow-2xl text-white flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left transition-transform hover:scale-[1.01]">
+            <div className="absolute inset-0 pointer-events-none opacity-40">
+              {[...Array(8)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className="absolute animate-twinkle"
+                  style={{
+                    top: `${Math.random() * 100}%`,
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 2}s`,
+                    animationDuration: `${2 + Math.random() * 2}s`
+                  }}
+                >
+                  <Star size={12 + Math.random() * 10} fill="white" />
+                </div>
+              ))}
+            </div>
+            
+            <div className="relative z-10 flex-1">
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 shadow-lg border border-white/10">
+                <Building2 size={32} className="text-white" />
               </div>
-              <h3 className="text-3xl font-bold mb-4">별장 / 정기관리 문의</h3>
-              <p className="text-slate-400 text-base leading-relaxed max-w-xl">
-                별장, 펜션, 법인 숙소 등 제주의 특별한 공간들을 위한 정기적인 케어가 필요하신가요? 링크클린만의 체계적인 관리 솔루션을 제안해드립니다.
+              <h3 className="text-3xl font-bold mb-4 flex items-center justify-center md:justify-start gap-2">
+                <span className="text-yellow-300">별장 / 정기관리</span> 문의 <Sparkles size={24} className="animate-pulse text-yellow-200" />
+              </h3>
+              <p className="text-red-50 text-base leading-relaxed max-w-xl font-medium">
+                별장, 펜션, 법인 숙소 등 제주의 특별한 공간들을 위한 <span className="text-white font-bold underline underline-offset-4 decoration-red-300">정기적인 케어</span>가 필요하신가요? 링크클린만의 체계적인 관리 솔루션을 제안해드립니다.
               </p>
             </div>
-            <div className="w-full md:w-auto">
-              <Link to="/contact" className="inline-block px-10 py-5 bg-white text-slate-900 font-bold rounded-2xl hover:bg-slate-100 transition-all shadow-lg hover:-translate-y-1">
+            <div className="relative z-10 w-full md:w-auto">
+              <Link to="/contact" className="inline-block px-10 py-5 bg-white text-red-700 font-bold rounded-2xl hover:bg-red-50 transition-all shadow-xl hover:-translate-y-1">
                 별장/정기상담 바로가기
               </Link>
             </div>
@@ -486,12 +604,11 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
         </div>
       </section>
 
-      {/* Portfolio Highlight Section */}
       <section className="py-24 bg-white/70 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-4">
             <div className="text-center md:text-left">
-              <h2 className="text-4xl font-bold text-slate-900 mb-4">시공 전후 리얼 데이터</h2>
+              <h2 className="text-4xl font-bold text-slate-900 mb-4">시공 전후 <span className="text-purple-custom underline decoration-purple-200 underline-offset-8">리얼 데이터</span></h2>
               <p className="text-slate-600">링크클린의 정직한 시공 사례를 직접 확인해 보세요.</p>
             </div>
             <Link to="/portfolio" className="flex items-center text-purple-custom font-bold hover:underline">
@@ -501,15 +618,15 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {portfolio.slice(0, 2).map((item) => (
-              <div key={item.id} className="group relative overflow-hidden rounded-[2.5rem] border border-slate-100 shadow-2xl bg-white transition-all hover:shadow-purple-100/50">
-                <BeforeAfterSlider before={item.beforeImg} after={item.afterImg} />
-                <div className="p-10">
+              <div key={item.id} className="group relative overflow-hidden rounded-[3rem] border border-slate-100 shadow-2xl bg-white transition-all hover:shadow-purple-100/50">
+                <BeforeAfterDisplay before={item.beforeImg} after={item.afterImg} />
+                <div className="p-8">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="px-3 py-1 bg-purple-50 text-purple-custom text-[10px] font-bold uppercase tracking-widest rounded-full">{item.majorCategory}</span>
                     <span className="text-slate-300">|</span>
                     <span className="text-slate-400 text-xs font-bold">{item.category}</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">{item.title}</h3>
+                  <h3 className="text-2xl font-bold text-slate-900 group-hover:text-purple-custom transition-colors">{item.title}</h3>
                   <p className="text-slate-500 mt-3 leading-relaxed">{item.description}</p>
                 </div>
               </div>
@@ -523,30 +640,143 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
 
 const About: React.FC = () => {
   return (
-    <div className="animate-in slide-in-from-bottom-4 duration-700 relative z-10">
-      <section className="py-24 bg-gradient-to-br from-slate-900 to-slate-800 text-white overflow-hidden relative">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <img src="https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover" alt="" />
+    <div className="animate-in fade-in duration-1000 relative z-10 pb-24 bg-white">
+      <section className="relative h-[75vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=2000" 
+            className="w-full h-full object-cover scale-105" 
+            alt="Luxurious Clean Living Room" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-transparent"></div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <span className="inline-block px-4 py-1.5 mb-6 bg-purple-custom text-white text-xs font-bold rounded-full uppercase tracking-widest">About Link Clean</span>
-          <h1 className="text-4xl md:text-6xl font-black mb-8 leading-tight">공간의 가치를 잇는<br/>정직한 땀방울, 링크클린</h1>
-          <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">단순히 쓸고 닦는 것이 아닌, 고객님의 건강한 일상과 공간 본연의 아름다움을 되찾아드리는 전문 클리닝 그룹입니다.</p>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="max-w-3xl text-white">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-12 h-[2px] bg-purple-400"></span>
+              <span className="text-sm font-bold tracking-[0.3em] uppercase text-purple-200">The Spirit of Link Clean</span>
+            </div>
+            <h1 className="text-5xl md:text-8xl font-black mb-8 leading-[1.1] drop-shadow-2xl">
+              단순함을 넘어선 <br/>
+              <span className="bg-gradient-to-r from-purple-400 to-purple-200 bg-clip-text text-transparent">공간의 예술화</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-slate-100 font-light leading-relaxed max-w-2xl drop-shadow-md">
+              우리는 보이지 않는 곳의 먼지를 닦아내는 것에서 멈추지 않습니다. <br/>
+              공간이 가진 고유의 결을 살리고, <span className="text-purple-300 font-medium">삶의 가치</span>를 복원하는 예술적 클리닝을 지향합니다.
+            </p>
+          </div>
         </div>
       </section>
-      <section className="py-24 bg-white/40 backdrop-blur-sm">
+
+      <section className="py-32 relative bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center mb-24">
-            <div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-8 border-l-8 border-purple-custom pl-6">우리의 철학 (Philosophy)</h2>
-              <div className="space-y-6 text-slate-700 text-lg leading-relaxed">
-                <p><strong>링크클린(Link Clean)</strong>은 '연결(Link)'과 '깨끗함(Clean)'의 합성어입니다. 우리는 깨끗한 공간이 사람의 마음과 건강, 그리고 새로운 시작을 잇는 가교 역할을 한다고 믿습니다.</p>
-                <p>2016년 제주에서 첫 발을 내디딘 이후, 제주 특유의 기후와 환경을 가장 잘 이해하는 로컬 전문가로서 신뢰를 쌓아왔습니다.</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center mb-40">
+            <div className="space-y-10">
+              <div className="space-y-4">
+                <span className="text-purple-custom font-black tracking-widest text-xs uppercase">Philosophy</span>
+                <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight">
+                  <span className="text-sky-600">제주</span>의 자연과 <br/>
+                  호흡하는 <span className="text-purple-custom">전문가들</span>
+                </h2>
+              </div>
+              <div className="space-y-8 text-slate-600 text-lg leading-relaxed">
+                <p>
+                  2016년, 푸른 바다와 거친 바람이 공존하는 제주에서 <strong className="text-purple-custom font-extrabold text-xl">링크클린(Link Clean)</strong>의 이야기가 시작되었습니다. 제주의 독특한 환경—염분 섞인 해풍, 화산토의 미세먼지, 고온다습한 기후—을 이해하지 못하면 제주의 공간을 제대로 케어할 수 없습니다.
+                </p>
+                <p>
+                  우리는 제주 도민의 삶을 가장 잘 아는 <span className="text-slate-900 font-bold border-b-2 border-sky-200">로컬 전문가</span>로서, 제주 전역의 수많은 주거 및 상업 공간에 <span className="text-purple-custom font-bold italic">'가장 맑은 공기와 감촉'</span>을 선물해 왔습니다. 
+                </p>
+                <div className="flex items-center gap-8 pt-4">
+                  <div>
+                    <span className="text-4xl font-black text-slate-900 block">2016</span>
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Founded Year</span>
+                  </div>
+                  <div className="w-[1px] h-12 bg-slate-200"></div>
+                  <div>
+                    <span className="text-4xl font-black text-slate-900 block">3.5k+</span>
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Projects Done</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="relative group">
-              <img src="https://images.unsplash.com/photo-1581578731522-745d05db9a26?auto=format&fit=crop&q=80&w=1000" alt="Team" className="rounded-[3rem] shadow-2xl border-8 border-white transition-transform group-hover:scale-[1.02] duration-500" />
+            <div className="relative">
+              <div className="absolute -top-12 -right-12 w-64 h-64 bg-purple-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+              <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-sky-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-bob-delayed"></div>
+              <img 
+                src="https://images.unsplash.com/photo-1556912173-3bb406ef7e77?auto=format&fit=crop&q=80&w=1000" 
+                alt="Minimalist Kitchen" 
+                className="relative z-10 rounded-[4rem] shadow-2xl w-full aspect-[4/5] object-cover transition-transform hover:scale-[1.02] duration-700" 
+              />
+              <div className="absolute bottom-12 right-12 z-20 bg-white/90 backdrop-blur-xl p-10 rounded-[3rem] shadow-2xl border border-white/20 max-w-xs">
+                 <Sparkles className="text-purple-custom mb-4" size={32} />
+                 <p className="text-slate-900 font-bold text-lg leading-snug">"공간은 정직합니다. 닦아낸 시간만큼 그 가치를 빛내주니까요."</p>
+              </div>
             </div>
+          </div>
+
+          <div className="text-center mb-20">
+             <h3 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">Our <span className="text-purple-custom">Core Values</span></h3>
+             <div className="w-20 h-1.5 bg-purple-custom mx-auto rounded-full"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {[
+              { 
+                icon: <Medal size={32} />, 
+                title: "본사 직영 책임제", 
+                desc: "하청을 주지 않습니다. 본사의 체계적인 교육을 이수한 숙련된 베테랑들이 팀 단위로 투입되어 모든 시공을 책임집니다.",
+                color: "bg-purple-50 text-purple-custom"
+              },
+              { 
+                icon: <Zap size={32} />, 
+                title: "디테일의 과학", 
+                desc: "고압 스팀 살균, UV 자외선 살균, 고성능 HEPA 필터 집진기 등 검증된 최첨단 장비를 활용하여 보이지 않는 오염까지 추적합니다.",
+                color: "bg-blue-50 text-blue-600"
+              },
+              { 
+                icon: <Leaf size={32} />, 
+                title: "에코-프렌들리 케어", 
+                desc: "사람과 자연을 생각합니다. 영유아와 임산부, 반려동물에게도 안전한 프리미엄 친환경 세제만을 엄선하여 사용합니다.",
+                color: "bg-green-50 text-green-600"
+              }
+            ].map((value, i) => (
+              <div key={i} className="group bg-white p-12 rounded-[3.5rem] border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-4">
+                <div className={`w-20 h-20 ${value.color} rounded-3xl flex items-center justify-center mb-8 group-hover:rotate-12 transition-transform`}>
+                  {value.icon}
+                </div>
+                <h4 className="text-2xl font-black text-slate-900 mb-6 group-hover:text-purple-custom transition-colors">{value.title}</h4>
+                <p className="text-slate-500 leading-relaxed text-lg">{value.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-40 bg-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-purple-600/20 rounded-full filter blur-[150px] -translate-y-1/2 translate-x-1/2"></div>
+           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-600/20 rounded-full filter blur-[150px] translate-y-1/2 -translate-x-1/2"></div>
+        </div>
+        <div className="max-w-5xl mx-auto px-4 text-center relative z-10 text-white">
+          <div className="inline-flex items-center gap-2 mb-10 px-6 py-2 bg-white/5 rounded-full border border-white/10 backdrop-blur-sm">
+             <Heart size={16} className="text-red-400" />
+             <span className="text-sm font-bold tracking-widest uppercase">The Link Clean Promise</span>
+          </div>
+          <h2 className="text-4xl md:text-7xl font-black mb-12 leading-[1.1]">
+            가장 <span className="text-purple-400">순수</span>한 공간에서 <br/>
+            새로운 시작을 맞이하세요.
+          </h2>
+          <p className="text-xl md:text-2xl text-slate-400 font-light mb-16 leading-relaxed max-w-3xl mx-auto">
+            우리의 손길이 머문 자리에는 깨끗함 그 이상의 <span className="text-white font-medium">안도감과 휴식</span>이 남습니다. <br className="hidden md:block"/>
+            링크클린은 <span className="text-purple-400 underline decoration-purple-500 underline-offset-8">공간의 가치</span>를 잇고, 고객님의 행복을 잇습니다.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-6">
+            <Link to="/contact" className="px-12 py-6 bg-purple-custom text-white font-black text-xl rounded-2xl shadow-2xl hover:bg-purple-600 transition-all hover:-translate-y-1">
+              프리미엄 견적 신청하기
+            </Link>
+            <a href="tel:064-763-4545" className="px-12 py-6 bg-white/5 border border-white/20 text-white font-black text-xl rounded-2xl backdrop-blur-sm hover:bg-white/10 transition-all">
+              전문가 직통 연결
+            </a>
           </div>
         </div>
       </section>
@@ -672,10 +902,10 @@ const Portfolio: React.FC<{ portfolio: PortfolioItem[]; setPortfolio: React.Disp
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2">서비스 분류</label>
                   <select value={newPf.category} onChange={e => setNewPf({...newPf, category: e.target.value as ServiceCategory})} className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none font-bold">
-                    <option value="입주청소">입주청소</option>
-                    <option value="이사청소">이사청소</option>
-                    <option value="에어컨청소">에어컨청소</option>
-                    <option value="줄눈시공">줄눈시공</option>
+                    <option value="전문청소">전문청소</option>
+                    <option value="특수청소">특수청소</option>
+                    <option value="예방시공">예방시공</option>
+                    <option value="가전청소">가전청소</option>                   
                   </select>
                 </div>
               </div>
@@ -697,7 +927,7 @@ const Portfolio: React.FC<{ portfolio: PortfolioItem[]; setPortfolio: React.Disp
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {portfolio.map((item) => (
             <div key={item.id} className="bg-white/90 backdrop-blur-md rounded-[2.5rem] overflow-hidden shadow-lg group border border-slate-100 transition-all hover:shadow-2xl">
-              <BeforeAfterSlider before={item.beforeImg} after={item.afterImg} />
+              <BeforeAfterDisplay before={item.beforeImg} after={item.afterImg} />
               <div className="p-8">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-purple-custom font-bold text-[10px] uppercase tracking-tighter bg-purple-50 px-3 py-1 rounded-full">{item.majorCategory}</span>

@@ -63,17 +63,19 @@ export const INITIAL_PORTFOLIO: PortfolioItem[] = [
     category: '입주청소',
     beforeImg: 'https://images.unsplash.com/photo-1584622781564-1d9876a13d00?auto=format&fit=crop&q=80&w=800',
     afterImg: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&q=80&w=800',
-    description: '베란다 창틀과 주방 기름때 완벽 제거 및 살균 소독.',
+    description: '베란다 창틀의 묵은 먼지와 주방 싱크대 하부장 공사 잔해물 완벽 제거.',
     date: '2024-03-15'
   },
   {
     id: 'p2',
-    title: '연동 대형 카페 외벽/외창 청소',
-    majorCategory: MajorCategory.PROFESSIONAL,
-    category: '외벽&외창청소',
-    beforeImg: 'https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&q=80&w=800',
-    afterImg: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800',
-    description: '염분 제거 및 고소 작업차를 이용한 전면 유리 세척.',
+    title: '연동 오피스텔 원룸 쓰레기집청소',
+    majorCategory: MajorCategory.SPECIAL,
+    category: '쓰레기집청소',
+    // 요청하신 '아일랜드 식탁 위 배달용기 가득한 사진'의 분위기를 반영한 샘플 이미지
+    beforeImg: 'https://images.unsplash.com/photo-1595113316349-9fa40464094d?auto=format&fit=crop&q=80&w=1200',
+    // 요청하신 '깨끗하게 정리된 화이트 주방' 분위기를 반영한 샘플 이미지
+    afterImg: 'https://images.unsplash.com/photo-1556912173-3bb406ef7e77?auto=format&fit=crop&q=80&w=1200',
+    description: '배달 용기 및 생활 폐기물 1.5톤 수거. 특수 약품을 이용한 찌든 때 제거 및 고온 스팀 살균 소독으로 즉시 거주 가능한 상태로 복원했습니다.',
     date: '2024-03-20'
   }
 ];
