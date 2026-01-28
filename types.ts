@@ -4,7 +4,8 @@ export enum MajorCategory {
   PROFESSIONAL = '전문청소',
   SPECIAL = '특수청소',
   APPLIANCE = '가전청소',
-  PREVENTIVE = '예방시공'
+  PREVENTIVE = '예방시공',
+  MANAGEMENT = '프리미엄 관리'
 }
 
 export type ServiceCategory = 
@@ -12,7 +13,8 @@ export type ServiceCategory =
   | '입주청소' | '이사청소' | '인테리어청소' | '거주청소' | '외벽&외창청소'
   | '준공청소' | '화재청소' | '쓰레기집청소' | '유품&고독사청소' | '폐기물처리'
   | '에어컨청소' | '냉장고청소' | '쇼파&매트리스' | '후드청소'
-  | '줄눈시공' | '새집증후군시공' | '바닥왁스' | '방역&해충소독';
+  | '줄눈시공' | '새집증후군시공' | '바닥왁스' | '방역&해충소독'
+  | '별장관리' | '정기관리' | '건물관리' | '거주정기청소';
 
 export interface PortfolioItem {
   id: string;
@@ -41,6 +43,7 @@ export interface SiteSettings {
   address: string;
   kakaoLink: string;
   naverTalkLink: string;
+  naverBlogLink: string;
   instagramLink: string;
   primaryColor: string;
   accentColor: string;

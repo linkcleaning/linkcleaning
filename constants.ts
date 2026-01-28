@@ -18,6 +18,7 @@ export const INITIAL_SETTINGS: SiteSettings = {
   address: "제주시 : 제주특별자치도 제주시 연동 2315-3 / 서귀포시 : 제주특별자치도 서귀포시 서호호근로 86-6",
   kakaoLink: "https://pf.kakao.com/_xfxdrxmM",
   naverTalkLink: "https://talk.naver.com/ct/wc92zf?frm=home",
+  naverBlogLink: "https://blog.naver.com/linkcleaning",
   instagramLink: "https://instagram.com/linkcleaning",
   primaryColor: "#E3F2FD",
   accentColor: "#8E24AA",
@@ -25,6 +26,13 @@ export const INITIAL_SETTINGS: SiteSettings = {
 };
 
 export const INITIAL_SERVICES: ServiceInfo[] = [
+  {
+    id: 'm6',
+    majorCategory: MajorCategory.MANAGEMENT,
+    title: '프리미엄 관리',
+    description: '제주 세컨하우스와 별장, 거주 공간을 정기적으로 케어하여 언제나 쾌적한 상태를 유지해 드립니다.',
+    subCategories: ['별장관리', '정기관리', '건물관리', '거주정기청소']
+  },
   {
     id: 'm2',
     majorCategory: MajorCategory.PROFESSIONAL,
@@ -36,7 +44,7 @@ export const INITIAL_SERVICES: ServiceInfo[] = [
     id: 'm3',
     majorCategory: MajorCategory.SPECIAL,
     title: '특수청소',
-    description: '특수한 상황에서의 오염 및 폐기물 처리를 전문 장비 and 인력으로 안전하게 해결합니다.',
+    description: '특수한 상황에서의 오염 및 폐기물 처리를 전문 장비 및 인력으로 안전하게 해결합니다.',
     subCategories: ['준공청소', '화재청소', '쓰레기집청소', '유품&고독사청소', '폐기물처리']
   },
   {
@@ -61,9 +69,9 @@ export const INITIAL_PORTFOLIO: PortfolioItem[] = [
     title: '제주시 노형동 신축 아파트 입주청소',
     majorCategory: MajorCategory.PROFESSIONAL,
     category: '입주청소',
-    beforeImg: 'https://images.unsplash.com/photo-1584622781564-1d9876a13d00?auto=format&fit=crop&q=80&w=800',
+    beforeImg: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800',
     afterImg: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&q=80&w=800',
-    description: '베란다 창틀의 묵은 먼지와 주방 싱크대 하부장 공사 잔해물 완벽 제거.',
+    description: '공사 후 남겨진 미세 먼지와 창틀의 시멘트 가루를 완벽하게 제거하고 친환경 살균 세척을 진행했습니다.',
     date: '2024-03-15'
   },
   {
@@ -71,11 +79,9 @@ export const INITIAL_PORTFOLIO: PortfolioItem[] = [
     title: '연동 오피스텔 원룸 쓰레기집청소',
     majorCategory: MajorCategory.SPECIAL,
     category: '쓰레기집청소',
-    // 요청하신 '아일랜드 식탁 위 배달용기 가득한 사진'의 분위기를 반영한 샘플 이미지
-    beforeImg: 'https://images.unsplash.com/photo-1595113316349-9fa40464094d?auto=format&fit=crop&q=80&w=1200',
-    // 요청하신 '깨끗하게 정리된 화이트 주방' 분위기를 반영한 샘플 이미지
-    afterImg: 'https://images.unsplash.com/photo-1556912173-3bb406ef7e77?auto=format&fit=crop&q=80&w=1200',
-    description: '배달 용기 및 생활 폐기물 1.5톤 수거. 특수 약품을 이용한 찌든 때 제거 및 고온 스팀 살균 소독으로 즉시 거주 가능한 상태로 복원했습니다.',
+    beforeImg: 'https://images.unsplash.com/photo-1598425237654-4fc758e50a93?auto=format&fit=crop&q=80&w=1200',
+    afterImg: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=1200',
+    description: '심각하게 방치된 생활 쓰레기와 오염원을 완벽하게 분리 수거하고, 특수 고온 멸균 소독을 통해 새 집 같은 컨디션으로 복원해 드렸습니다.',
     date: '2024-03-20'
   }
 ];
