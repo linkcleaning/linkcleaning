@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { 
   Home as HomeIcon, 
   Info, 
@@ -12,6 +12,7 @@ import {
   X, 
   Phone, 
   MapPin, 
+  ArrowLeft,
   ArrowRight,
   Plus,
   Trash2,
@@ -49,7 +50,11 @@ import {
   ThumbsUp,
   Wind,
   Smile,
-  ImagePlus
+  ImagePlus,
+  ArrowRightCircle,
+  Stethoscope,
+  Microscope,
+  Cpu
 } from 'lucide-react';
 
 import { 
@@ -309,28 +314,6 @@ const LuckyDaysCalendar: React.FC<{ settings: SiteSettings }> = ({ settings }) =
             </div>
           </div>
         </div>
-
-        <div className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-10 border border-[#03C75A]/20 shadow-lg transition-all">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4 text-center md:text-left">
-              <div className="w-12 h-12 md:w-16 md:h-16 bg-[#03C75A] rounded-xl flex items-center justify-center flex-shrink-0">
-                <span className="text-white text-2xl md:text-4xl font-black italic">N</span>
-              </div>
-              <div>
-                <h4 className="text-lg md:text-xl font-black text-slate-900 mb-1">링크클린 <span className="text-[#03C75A]">블로그</span></h4>
-                <p className="text-slate-500 text-[11px] md:text-sm">제주 시공 현장 사진을 블로그에서 직접 확인하세요.</p>
-              </div>
-            </div>
-            <a 
-              href={settings.naverBlogLink} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="w-full md:w-auto inline-flex items-center justify-center px-6 py-3 bg-[#03C75A] text-white text-sm font-black rounded-xl shadow-md hover:-translate-y-0.5 transition-all"
-            >
-              블로그 시공일지 <ExternalLink size={16} className="ml-2" />
-            </a>
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -338,13 +321,19 @@ const LuckyDaysCalendar: React.FC<{ settings: SiteSettings }> = ({ settings }) =
 
 const FloatingSideContact: React.FC<{ settings: SiteSettings }> = ({ settings }) => {
   return (
-    <div className="fixed right-4 md:right-6 bottom-24 md:bottom-32 z-50 flex flex-col space-y-3 items-center">
-      <div className="animate-bob relative flex flex-col items-center mb-1">
-        <div className="relative p-1.5 md:p-2 bg-white rounded-xl md:rounded-2xl shadow-xl border border-purple-100">
+    <div className="fixed right-4 md:right-6 bottom-24 md:bottom-32 z-50 flex flex-col space-y-4 items-center">
+      {/* 상단 청소기 아이콘 및 말풍선 */}
+      <div className="group relative flex flex-col items-center mb-1">
+        <div className="animate-bob relative p-1.5 md:p-2 bg-white rounded-xl md:rounded-2xl shadow-xl border border-purple-100">
           <IconicVacuum className="w-8 h-8 md:w-12 md:h-12 text-purple-custom" />
         </div>
+        <span className="hidden md:block absolute right-full mr-4 bg-white px-3 py-2 rounded-xl text-[11px] font-black text-purple-custom shadow-2xl opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-300 whitespace-nowrap border-2 border-purple-50">
+          반짝반짝 링크클린! ✨
+          <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white border-t-2 border-r-2 border-purple-50 rotate-45"></div>
+        </span>
       </div>
 
+      {/* 카카오톡 */}
       <a 
         href={settings.kakaoLink} 
         target="_blank" 
@@ -352,9 +341,10 @@ const FloatingSideContact: React.FC<{ settings: SiteSettings }> = ({ settings })
         className="w-11 h-11 md:w-14 md:h-14 bg-[#FEE500] rounded-full shadow-lg flex items-center justify-center text-[#3c1e1e] hover:scale-110 transition-transform group relative"
       >
         <MessageSquare size={20} fill="currentColor" />
-        <span className="hidden md:block absolute right-full mr-3 bg-white px-2 py-1 rounded-lg text-xs font-bold shadow-xl opacity-0 group-hover:opacity-100 whitespace-nowrap border border-slate-100">카톡 문의</span>
+        <span className="hidden md:block absolute right-full mr-4 bg-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-xl opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap border border-slate-100 text-slate-700">카톡 실시간문의</span>
       </a>
 
+      {/* 네이버 톡톡 */}
       <a 
         href={settings.naverTalkLink} 
         target="_blank" 
@@ -362,8 +352,10 @@ const FloatingSideContact: React.FC<{ settings: SiteSettings }> = ({ settings })
         className="w-11 h-11 md:w-14 md:h-14 bg-[#03C75A] rounded-full shadow-lg flex items-center justify-center text-white hover:scale-110 transition-transform group relative"
       >
         <MessageSquare size={20} />
+        <span className="hidden md:block absolute right-full mr-4 bg-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-xl opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap border border-slate-100 text-slate-700">네이버 톡톡</span>
       </a>
 
+      {/* 인스타그램 */}
       <a 
         href={settings.instagramLink} 
         target="_blank" 
@@ -371,6 +363,7 @@ const FloatingSideContact: React.FC<{ settings: SiteSettings }> = ({ settings })
         className="w-11 h-11 md:w-14 md:h-14 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] rounded-full shadow-lg flex items-center justify-center text-white hover:scale-110 transition-transform group relative"
       >
         <Instagram size={20} />
+        <span className="hidden md:block absolute right-full mr-4 bg-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-xl opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap border border-slate-100 text-slate-700">인스타그램</span>
       </a>
     </div>
   );
@@ -391,6 +384,106 @@ const BeforeAfterDisplay: React.FC<{ before: string; after: string }> = ({ befor
           AFTER
         </div>
       </div>
+    </div>
+  );
+};
+
+// --- Service Detail Page Component ---
+const ServiceDetail: React.FC<{ services: ServiceInfo[] }> = ({ services }) => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const service = services.find(s => s.id === id);
+
+  if (!service) {
+    return <div className="py-20 text-center">서비스 정보를 찾을 수 없습니다.</div>;
+  }
+
+  return (
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-10 bg-white min-h-screen">
+      {/* Hero Section */}
+      <section className="bg-slate-900 text-white py-16 md:py-24 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-purple-custom/20 skew-x-12 translate-x-20"></div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="flex items-center gap-2 text-slate-400 hover:text-white mb-8 transition-colors text-sm font-bold"
+          >
+            <ArrowLeft size={18} /> 이전으로
+          </button>
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-purple-custom rounded-2xl flex items-center justify-center shadow-xl">
+              <Sparkles size={32} />
+            </div>
+            <h1 className="text-3xl md:text-5xl font-black">{service.title}</h1>
+          </div>
+          <p className="text-slate-300 text-base md:text-xl max-w-2xl leading-relaxed">
+            {service.description}
+          </p>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <section className="py-16 md:py-24 max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 md:gap-20">
+          {/* Left: Process Timeline */}
+          <div className="lg:col-span-2">
+            <h2 className="text-2xl md:text-3xl font-black mb-10 flex items-center gap-3">
+              <Stethoscope className="text-purple-custom" /> 시공 프로세스
+            </h2>
+            <div className="space-y-12 relative">
+              <div className="absolute left-[19px] top-2 bottom-2 w-0.5 bg-slate-100"></div>
+              {service.process.map((step, idx) => (
+                <div key={idx} className="relative pl-12 group">
+                  <div className="absolute left-0 top-0 w-10 h-10 bg-white border-2 border-purple-custom rounded-full flex items-center justify-center z-10 font-black text-purple-custom group-hover:bg-purple-custom group-hover:text-white transition-colors">
+                    {idx + 1}
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 group-hover:text-purple-custom transition-colors">{step.title}</h3>
+                  <p className="text-slate-600 text-sm md:text-base leading-relaxed">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: Info Cards */}
+          <div className="space-y-8">
+            <div className="bg-sky-50 rounded-[2rem] p-8 border border-sky-100">
+              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+                <Microscope size={20} className="text-purple-custom" /> 핵심 특장점
+              </h3>
+              <ul className="space-y-4">
+                {service.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-sm font-medium text-slate-700">
+                    <CheckCircle size={16} className="text-purple-custom flex-shrink-0 mt-0.5" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-slate-50 rounded-[2rem] p-8 border border-slate-100">
+              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+                <Cpu size={20} className="text-purple-custom" /> 전문 장비 & 솔루션
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {service.equipment.map((item, idx) => (
+                  <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 text-slate-500 text-[11px] font-bold rounded-lg shadow-sm">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4">
+              <Link 
+                to="/contact" 
+                className="w-full py-5 bg-purple-custom text-white font-black rounded-2xl shadow-lg flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform"
+              >
+                지금 견적 상담받기 <ArrowRightCircle size={20} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
@@ -478,24 +571,30 @@ const Footer: React.FC<{ settings: SiteSettings }> = ({ settings }) => {
 const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfolio: PortfolioItem[] }> = ({ settings, services, portfolio }) => {
   return (
     <div className="animate-in fade-in duration-500 relative z-10">
-      {/* Hero Section Optimized for Mobile */}
+      {/* Hero Section */}
       <section className="relative h-[70vh] md:h-[85vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src="https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&q=80&w=2070" alt="Jeju" className="w-full h-full object-cover brightness-75 scale-110" />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/20 to-slate-900/80"></div>
+          <img src="https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&q=80&w=2070" alt="Jeju" className="w-full h-full object-cover scale-110 brightness-75" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/30 to-slate-900/80"></div>
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 text-white w-full text-center">
-          <div className="max-w-4xl mx-auto">
-            <span className="inline-block px-3 py-1 mb-6 md:mb-8 bg-white/10 backdrop-blur-md border border-white/20 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase rounded-full">Jeju Premium Cleaning</span>
-            <h1 className="text-3xl md:text-7xl font-extrabold mb-6 md:mb-8 leading-[1.25] md:leading-[1.15]">
-              제주의 <span className="text-sky-300">깨끗함</span>, <br className="md:hidden"/>
-              공간의 <span className="text-purple-400">품격</span>을 깨우다
-            </h1>
-            <p className="text-sm md:text-2xl mb-8 md:mb-12 text-slate-200 font-light leading-relaxed max-w-xl md:max-w-2xl mx-auto">
-              공간의 가치를 되찾아드리는 <br className="md:hidden"/>
-              링크클린의 <span className="text-white font-medium">프리미엄 케어 솔루션</span>
-            </p>
-            <div className="animate-bounce opacity-40"><ChevronDown size={24} className="mx-auto" /></div>
+          <div className="max-w-4xl mx-auto flex flex-col items-center">
+            {/* 텍스트 보호를 위한 은은한 글래스모피즘 박스 */}
+            <div className="bg-black/10 backdrop-blur-[2px] p-6 md:p-10 rounded-[3rem] border border-white/10 shadow-2xl">
+              <span className="inline-block px-4 py-1.5 mb-6 bg-purple-custom/40 border border-white/30 text-[10px] md:text-xs font-black tracking-[0.2em] uppercase rounded-full shadow-lg">
+                Jeju Premium Cleaning Solution
+              </span>
+              <h1 className="text-4xl md:text-7xl font-extrabold mb-8 leading-[1.3] text-shadow-strong">
+                제주의 <span className="text-sky-300 text-shadow-premium">깨끗함</span>
+                <br />
+                공간의 <span className="text-purple-400 text-shadow-premium">품격</span>을 깨우다
+              </h1>
+              <p className="text-sm md:text-2xl mb-8 text-slate-100 font-medium leading-relaxed max-w-xl md:max-w-2xl mx-auto text-shadow-strong">
+                공간 본연의 가치를 되찾아드리는 <br className="md:hidden"/>
+                링크클린만의 <span className="text-white border-b-2 border-purple-400/50 pb-1">프리미엄 케어 솔루션</span>
+              </p>
+              <div className="animate-bounce opacity-60 mt-4"><ChevronDown size={32} className="mx-auto" /></div>
+            </div>
           </div>
         </div>
       </section>
@@ -511,14 +610,28 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
             {services.map((service) => (
               <div key={service.id} className="bg-white/90 p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] shadow-sm border border-sky-100 flex flex-col h-full hover:shadow-lg transition-all group">
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-sky-50 rounded-xl md:rounded-2xl flex items-center justify-center mb-5 text-purple-custom group-hover:bg-purple-custom group-hover:text-white transition-colors">
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-sky-50 rounded-xl md:rounded-2xl flex items-center justify-center mb-5 text-purple-custom group-hover:bg-purple-custom group-hover:text-white transition-colors relative">
                   {service.majorCategory === MajorCategory.PROFESSIONAL && <Sparkles size={28} />}
                   {service.majorCategory === MajorCategory.SPECIAL && <Flame size={28} />}
                   {service.majorCategory === MajorCategory.APPLIANCE && <Zap size={28} />}
                   {service.majorCategory === MajorCategory.PREVENTIVE && <ShieldCheck size={28} />}
                   {service.majorCategory === MajorCategory.MANAGEMENT && <Building2 size={28} />}
+                  
+                  {/* 상세 보기 링크 아이콘 */}
+                  <Link 
+                    to={`/service/${service.id}`}
+                    className="absolute -top-1 -right-1 w-6 h-6 bg-white border border-slate-100 rounded-full shadow-sm flex items-center justify-center text-purple-custom opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="상세 프로세스 보기"
+                  >
+                    <Info size={14} />
+                  </Link>
                 </div>
-                <h3 className="text-lg md:text-2xl font-bold text-slate-900 mb-3">{service.title}</h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <h3 className="text-lg md:text-2xl font-bold text-slate-900">{service.title}</h3>
+                  <Link to={`/service/${service.id}`} className="text-slate-300 hover:text-purple-custom transition-colors">
+                    <Info size={16} />
+                  </Link>
+                </div>
                 <p className="text-slate-600 text-[11px] md:text-sm leading-relaxed mb-6">{service.description}</p>
                 <div className="flex-grow">
                   <div className="flex flex-wrap gap-1.5">
@@ -527,11 +640,39 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
                     ))}
                   </div>
                 </div>
-                <div className="pt-6 mt-4 border-t border-slate-50">
-                  <Link to="/contact" className="text-purple-custom font-bold text-xs md:text-sm flex items-center">견적 신청 <ChevronRight size={14} className="ml-1" /></Link>
+                <div className="pt-6 mt-4 border-t border-slate-50 flex justify-between items-center">
+                  <Link to={`/service/${service.id}`} className="text-purple-custom font-bold text-xs md:text-sm flex items-center group/btn">
+                    상세 프로세스 <ChevronRight size={14} className="ml-1 group-hover/btn:translate-x-1 transition-transform" />
+                  </Link>
+                  <Link to="/contact" className="text-slate-400 hover:text-slate-900 text-xs font-medium">견적 문의</Link>
                 </div>
               </div>
             ))}
+
+            <a 
+              href={settings.naverBlogLink} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] shadow-sm border border-[#03C75A]/20 flex flex-col h-full hover:shadow-lg transition-all group relative overflow-hidden"
+            >
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-[#03C75A]/10 rounded-xl md:rounded-2xl flex items-center justify-center mb-5 text-[#03C75A] group-hover:bg-[#03C75A] group-hover:text-white transition-colors">
+                <span className="text-2xl md:text-3xl font-black italic">N</span>
+              </div>
+              <h3 className="text-lg md:text-2xl font-bold text-slate-900 mb-3">시공 블로그</h3>
+              <p className="text-slate-600 text-[11px] md:text-sm leading-relaxed mb-6">
+                제주 전 지역의 실제 시공 현장을 생생하게 확인하세요. 링크클린의 정직한 작업 일지가 매일 업데이트됩니다.
+              </p>
+              <div className="flex-grow">
+                <div className="flex flex-wrap gap-1.5">
+                  <span className="px-2 py-1 bg-[#03C75A]/5 text-[#03C75A] text-[10px] md:text-xs font-bold rounded-md border border-[#03C75A]/10">현장사진</span>
+                  <span className="px-2 py-1 bg-[#03C75A]/5 text-[#03C75A] text-[10px] md:text-xs font-bold rounded-md border border-[#03C75A]/10">작업후기</span>
+                  <span className="px-2 py-1 bg-[#03C75A]/5 text-[#03C75A] text-[10px] md:text-xs font-bold rounded-md border border-[#03C75A]/10">NAVER</span>
+                </div>
+              </div>
+              <div className="pt-6 mt-4 border-t border-slate-50">
+                <div className="text-[#03C75A] font-bold text-xs md:text-sm flex items-center">블로그 구경하기 <ExternalLink size={14} className="ml-1" /></div>
+              </div>
+            </a>
           </div>
         </div>
       </section>
@@ -548,19 +689,25 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {portfolio.slice(0, 2).map((item) => (
-              <div key={item.id} className="bg-white rounded-[1.5rem] md:rounded-[3rem] overflow-hidden border border-slate-100 shadow-xl">
-                <BeforeAfterDisplay before={item.beforeImg} after={item.afterImg} />
-                <div className="p-5 md:p-8">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-0.5 bg-purple-50 text-purple-custom text-[9px] md:text-[10px] font-bold rounded-full uppercase">{item.majorCategory}</span>
-                    <span className="text-slate-300">|</span>
-                    <span className="text-slate-400 text-[10px] md:text-xs font-bold">{item.category}</span>
+            {portfolio.length > 0 ? (
+              portfolio.slice(0, 2).map((item) => (
+                <div key={item.id} className="bg-white rounded-[1.5rem] md:rounded-[3rem] overflow-hidden border border-slate-100 shadow-xl">
+                  <BeforeAfterDisplay before={item.beforeImg} after={item.afterImg} />
+                  <div className="p-5 md:p-8">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="px-2 py-0.5 bg-purple-50 text-purple-custom text-[9px] md:text-[10px] font-bold rounded-full uppercase">{item.majorCategory}</span>
+                      <span className="text-slate-300">|</span>
+                      <span className="text-slate-400 text-[10px] md:text-xs font-bold">{item.category}</span>
+                    </div>
+                    <h3 className="text-lg md:text-2xl font-bold text-slate-900 truncate">{item.title}</h3>
                   </div>
-                  <h3 className="text-lg md:text-2xl font-bold text-slate-900 truncate">{item.title}</h3>
                 </div>
+              ))
+            ) : (
+              <div className="col-span-2 py-20 text-center text-slate-400 border-2 border-dashed rounded-3xl">
+                등록된 시공 사례가 없습니다. 관리자 페이지에서 사진을 업로드해 주세요.
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -712,11 +859,11 @@ const Portfolio: React.FC<{ portfolio: PortfolioItem[]; setPortfolio: React.Disp
               <input required value={newPf.title} onChange={e => setNewPf({...newPf, title: e.target.value})} placeholder="현장 이름" className="w-full px-4 py-3 bg-slate-50 border rounded-xl" />
               <div className="grid grid-cols-2 gap-3">
                 <div className="relative aspect-video border-2 border-dashed rounded-xl flex items-center justify-center overflow-hidden bg-slate-50">
-                  {newPf.beforeImg ? <img src={newPf.beforeImg} className="w-full h-full object-cover" /> : <div className="text-[10px] text-slate-400">BEFORE</div>}
+                  {newPf.beforeImg ? <img src={newPf.beforeImg} className="w-full h-full object-cover" /> : <div className="text-[10px] text-slate-400">바탕화면 BEFORE 선택</div>}
                   <input required type="file" accept="image/*" onChange={e => handleFileChange(e, 'before')} className="absolute inset-0 opacity-0 cursor-pointer" />
                 </div>
                 <div className="relative aspect-video border-2 border-dashed rounded-xl flex items-center justify-center overflow-hidden bg-slate-50">
-                  {newPf.afterImg ? <img src={newPf.afterImg} className="w-full h-full object-cover" /> : <div className="text-[10px] text-slate-400">AFTER</div>}
+                  {newPf.afterImg ? <img src={newPf.afterImg} className="w-full h-full object-cover" /> : <div className="text-[10px] text-slate-400">바탕화면 AFTER 선택</div>}
                   <input required type="file" accept="image/*" onChange={e => handleFileChange(e, 'after')} className="absolute inset-0 opacity-0 cursor-pointer" />
                 </div>
               </div>
@@ -764,38 +911,93 @@ const Admin: React.FC<{ settings: SiteSettings; setSettings: React.Dispatch<Reac
   };
 
   const addPortfolio = () => {
-    if (!newPf.title || !newPf.beforeImg || !newPf.afterImg) { alert("입력 오류"); return; }
-    const item: PortfolioItem = { id: Date.now().toString(), title: newPf.title!, description: newPf.description || '', category: newPf.category as ServiceCategory, majorCategory: newPf.majorCategory as MajorCategory, beforeImg: newPf.beforeImg!, afterImg: newPf.afterImg!, date: new Date().toLocaleDateString() };
+    if (!newPf.title || !newPf.beforeImg || !newPf.afterImg) { alert("모든 항목을 입력하고 사진을 선택해 주세요."); return; }
+    const item: PortfolioItem = { 
+      id: Date.now().toString(), 
+      title: newPf.title!, 
+      description: newPf.description || '', 
+      category: newPf.category as ServiceCategory, 
+      majorCategory: newPf.majorCategory as MajorCategory, 
+      beforeImg: newPf.beforeImg!, 
+      afterImg: newPf.afterImg!, 
+      date: new Date().toLocaleDateString() 
+    };
     setPortfolio([item, ...portfolio]);
     setNewPf({ title: '', description: '', category: '입주청소', majorCategory: MajorCategory.PROFESSIONAL, beforeImg: '', afterImg: '' });
+    alert("새로운 시공 사례가 등록되었습니다. 메인 화면에서 확인하실 수 있습니다.");
+  };
+
+  const deletePortfolio = (id: string) => {
+    if (confirm("이 사례를 삭제하시겠습니까?")) {
+      setPortfolio(portfolio.filter(p => p.id !== id));
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 py-10 relative z-10">
       <div className="max-w-6xl mx-auto px-4">
-        <h1 className="text-2xl font-bold mb-8 flex items-center gap-2"><Settings /> 관리자</h1>
+        <h1 className="text-2xl font-bold mb-8 flex items-center gap-2"><Settings /> 관리자 모드</h1>
         <div className="flex space-x-2 mb-6 overflow-x-auto pb-2">
           {['general', 'inquiries', 'portfolio'].map(t => (
-            <button key={t} onClick={() => setTab(t as any)} className={`px-5 py-2 rounded-lg font-bold text-xs whitespace-nowrap shadow-sm ${tab === t ? 'bg-purple-custom text-white' : 'bg-white text-slate-500'}`}>{t === 'general' ? '기본' : t === 'inquiries' ? '상담' : '사례'}</button>
+            <button key={t} onClick={() => setTab(t as any)} className={`px-5 py-2 rounded-lg font-bold text-xs whitespace-nowrap shadow-sm transition-all ${tab === t ? 'bg-purple-custom text-white' : 'bg-white text-slate-500 hover:bg-slate-100'}`}>{t === 'general' ? '사이트 정보' : t === 'inquiries' ? '상담 신청' : '포트폴리오(사례) 관리'}</button>
           ))}
         </div>
+
         {tab === 'portfolio' && (
-          <div className="bg-white p-6 rounded-2xl shadow-sm border mb-8">
-            <h2 className="text-lg font-bold mb-6">시공 사례 등록</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <input type="text" value={newPf.title} onChange={e => setNewPf({...newPf, title: e.target.value})} placeholder="제목" className="w-full p-3 border rounded-xl text-sm" />
-              <div className="grid grid-cols-2 gap-3">
-                <div className="relative aspect-square border-2 border-dashed rounded-xl flex items-center justify-center bg-slate-50 overflow-hidden">
-                  {newPf.beforeImg ? <img src={newPf.beforeImg} className="w-full h-full object-cover" /> : <span className="text-[8px]">BEFORE</span>}
-                  <input type="file" onChange={e => handleFileChange(e, 'before')} className="absolute inset-0 opacity-0" />
+          <div className="space-y-8">
+            <div className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border">
+              <h2 className="text-lg font-bold mb-6 flex items-center gap-2"><Upload size={20} /> 새 시공 사례 등록 (바탕화면 사진 올리기)</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-400 mb-1">제목</label>
+                    <input type="text" value={newPf.title} onChange={e => setNewPf({...newPf, title: e.target.value})} placeholder="현장 이름을 입력하세요" className="w-full p-3 border rounded-xl text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-400 mb-1">설명</label>
+                    <textarea value={newPf.description} onChange={e => setNewPf({...newPf, description: e.target.value})} placeholder="상세 설명을 입력하세요" className="w-full p-3 border rounded-xl text-sm h-24" />
+                  </div>
                 </div>
-                <div className="relative aspect-square border-2 border-dashed rounded-xl flex items-center justify-center bg-slate-50 overflow-hidden">
-                  {newPf.afterImg ? <img src={newPf.afterImg} className="w-full h-full object-cover" /> : <span className="text-[8px]">AFTER</span>}
-                  <input type="file" onChange={e => handleFileChange(e, 'after')} className="absolute inset-0 opacity-0" />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold text-slate-400 mb-1 text-center">BEFORE (파일 선택)</label>
+                    <div className="relative aspect-square border-2 border-dashed rounded-xl flex items-center justify-center bg-slate-50 overflow-hidden hover:bg-slate-100 transition-colors">
+                      {newPf.beforeImg ? <img src={newPf.beforeImg} className="w-full h-full object-cover" /> : <div className="flex flex-col items-center text-slate-300"><ImageIcon size={30} /><span className="text-[10px] mt-2">클릭하여 선택</span></div>}
+                      <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'before')} className="absolute inset-0 opacity-0 cursor-pointer" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold text-slate-400 mb-1 text-center">AFTER (파일 선택)</label>
+                    <div className="relative aspect-square border-2 border-dashed rounded-xl flex items-center justify-center bg-slate-50 overflow-hidden hover:bg-slate-100 transition-colors">
+                      {newPf.afterImg ? <img src={newPf.afterImg} className="w-full h-full object-cover" /> : <div className="flex flex-col items-center text-slate-300"><ImageIcon size={30} /><span className="text-[10px] mt-2">클릭하여 선택</span></div>}
+                      <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'after')} className="absolute inset-0 opacity-0 cursor-pointer" />
+                    </div>
+                  </div>
                 </div>
               </div>
+              <button onClick={addPortfolio} disabled={isUploading} className="w-full py-4 bg-purple-custom text-white font-bold rounded-xl text-sm shadow-lg hover:bg-purple-700 transition-all flex items-center justify-center gap-2">
+                {isUploading ? <Loader2 className="animate-spin" /> : <><CheckCircle size={18} /> 포트폴리오 등록하기</>}
+              </button>
             </div>
-            <button onClick={addPortfolio} className="w-full py-3 bg-slate-900 text-white font-bold rounded-xl text-sm">업로드</button>
+
+            <div className="bg-white p-6 rounded-2xl shadow-sm border">
+              <h2 className="text-lg font-bold mb-6">현재 등록된 사례 (상위 2개가 메인에 노출됩니다)</h2>
+              <div className="grid grid-cols-1 gap-4">
+                {portfolio.map(p => (
+                  <div key={p.id} className="flex items-center gap-4 p-4 border rounded-xl hover:bg-slate-50 transition-colors">
+                    <div className="flex -space-x-3">
+                      <img src={p.beforeImg} className="w-12 h-12 rounded-lg border-2 border-white object-cover" />
+                      <img src={p.afterImg} className="w-12 h-12 rounded-lg border-2 border-white object-cover" />
+                    </div>
+                    <div className="flex-grow">
+                      <h4 className="text-sm font-bold truncate">{p.title}</h4>
+                      <p className="text-[10px] text-slate-400">{p.date}</p>
+                    </div>
+                    <button onClick={() => deletePortfolio(p.id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -816,6 +1018,7 @@ const App: React.FC = () => {
             <Route path="/about" element={<About />} />
             <Route path="/portfolio" element={<Portfolio portfolio={store.portfolio} setPortfolio={store.setPortfolio} />} />
             <Route path="/contact" element={<Contact settings={store.settings} services={store.services} inquiries={store.inquiries} setInquiries={store.setInquiries} />} />
+            <Route path="/service/:id" element={<ServiceDetail services={store.services} />} />
             <Route path="/admin" element={<Admin settings={store.settings} setSettings={store.setSettings} inquiries={store.inquiries} portfolio={store.portfolio} setPortfolio={store.setPortfolio} services={store.services} />} />
           </Routes>
         </main>

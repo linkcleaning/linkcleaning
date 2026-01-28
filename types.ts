@@ -14,7 +14,7 @@ export type ServiceCategory =
   | '준공청소' | '화재청소' | '쓰레기집청소' | '유품&고독사청소' | '폐기물처리'
   | '에어컨청소' | '냉장고청소' | '쇼파&매트리스' | '후드청소'
   | '줄눈시공' | '새집증후군시공' | '바닥왁스' | '방역&해충소독'
-  | '별장관리' | '정기관리' | '건물관리' | '거주정기청소';
+  | '별장관리' | '정기관리' | '건물관리' | '거주정기청소' | '사무실관리' | '계단관리';
 
 export interface PortfolioItem {
   id: string;
@@ -27,12 +27,20 @@ export interface PortfolioItem {
   date: string;
 }
 
+export interface ServiceStep {
+  title: string;
+  desc: string;
+}
+
 export interface ServiceInfo {
   id: string;
   title: string;
   description: string;
   majorCategory: MajorCategory;
   subCategories: ServiceCategory[];
+  process: ServiceStep[];
+  equipment: string[];
+  features: string[];
 }
 
 export interface SiteSettings {
