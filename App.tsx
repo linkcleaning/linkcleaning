@@ -54,7 +54,9 @@ import {
   ArrowRightCircle, 
   Stethoscope, 
   Microscope, 
-  Cpu 
+  Cpu,
+  Copy,
+  Terminal
 } from 'lucide-react';
 
 import { 
@@ -87,7 +89,12 @@ const fileToBase64 = (file: File): Promise<string> => {
 const useStore = () => {
   const [settings, setSettings] = useState<SiteSettings>(() => {
     const saved = localStorage.getItem('lc_settings');
-    return saved ? JSON.parse(saved) : INITIAL_SETTINGS;
+    const baseSettings = saved ? JSON.parse(saved) : INITIAL_SETTINGS;
+    // 만약 로컬 스토리지에 로고가 비어있다면 초기 설정의 로고를 가져옵니다.
+    if (!baseSettings.logoUrl && INITIAL_SETTINGS.logoUrl) {
+      baseSettings.logoUrl = INITIAL_SETTINGS.logoUrl;
+    }
+    return baseSettings;
   });
 
   const [services, setServices] = useState<ServiceInfo[]>(() => {
@@ -216,10 +223,13 @@ const MainLogo: React.FC<{ settings: SiteSettings; size?: 'sm' | 'md' | 'lg' }> 
   };
   const iconSizes = { sm: 20, md: 32, lg: 48 };
 
+  // localStorage에 저장된 사용자 로고가 있으면 그것을 쓰고, 없으면 코드에 하드코딩된 로고를 씁니다.
+  const currentLogo = settings.logoUrl || INITIAL_SETTINGS.logoUrl;
+
   return (
     <div className={`relative flex items-center justify-center rounded-2xl md:rounded-3xl bg-white shadow-lg overflow-hidden group transition-all duration-500 border border-slate-100 p-1.5 ${containerClasses[size]}`}>
-      {settings.logoUrl ? (
-        <img src={settings.logoUrl} alt={settings.siteName} className="w-full h-full object-contain" />
+      {currentLogo ? (
+        <img src={currentLogo} alt={settings.siteName} className="w-full h-full object-contain" />
       ) : (
         <div className="w-full h-full bg-gradient-to-br from-purple-600 to-purple-800 flex items-center justify-center rounded-xl md:rounded-2xl">
           <Sparkles size={iconSizes[size]} className="text-white z-10 animate-pulse" />
@@ -327,13 +337,14 @@ const LuckyDaysCalendar: React.FC<{ settings: SiteSettings }> = ({ settings }) =
 };
 
 const FloatingSideContact: React.FC<{ settings: SiteSettings }> = ({ settings }) => {
+  const currentLogo = settings.logoUrl || INITIAL_SETTINGS.logoUrl;
   return (
     <div className="fixed right-4 md:right-6 bottom-24 md:bottom-32 z-50 flex flex-col space-y-4 items-center">
       {/* 상단 캐릭터 마스코트 애니메이션 */}
       <div className="group relative flex flex-col items-center mb-1">
         <div className="animate-bob relative p-1 md:p-1.5 bg-white rounded-2xl shadow-2xl border-2 border-purple-50 flex items-center justify-center overflow-hidden w-12 h-12 md:w-16 md:h-16">
-          {settings.logoUrl ? (
-             <img src={settings.logoUrl} className="w-full h-full object-contain" />
+          {currentLogo ? (
+             <img src={currentLogo} className="w-full h-full object-contain" />
           ) : (
             <IconicVacuum className="w-8 h-8 md:w-12 md:h-12 text-purple-custom" />
           )}
@@ -580,6 +591,7 @@ const Footer: React.FC<{ settings: SiteSettings }> = ({ settings }) => {
 };
 
 const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfolio: PortfolioItem[] }> = ({ settings, services, portfolio }) => {
+  const currentLogo = settings.logoUrl || INITIAL_SETTINGS.logoUrl;
   return (
     <div className="animate-in fade-in duration-500 relative z-10">
       {/* Hero Section */}
@@ -593,9 +605,9 @@ const Home: React.FC<{ settings: SiteSettings; services: ServiceInfo[]; portfoli
             {/* 텍스트 보호를 위한 은은한 글래스모피즘 박스 */}
             <div className="bg-black/20 backdrop-blur-[3px] p-6 md:p-14 rounded-[3.5rem] border border-white/10 shadow-2xl relative">
               {/* 캐릭터 마스코트 배치 (제공된 이미지) */}
-              {settings.logoUrl && (
+              {currentLogo && (
                 <div className="absolute -top-20 md:-top-32 right-0 md:-right-16 animate-bob w-24 h-24 md:w-56 md:h-56 drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]">
-                   <img src={settings.logoUrl} className="w-full h-full object-contain filter drop-shadow-lg" />
+                   <img src={currentLogo} className="w-full h-full object-contain filter drop-shadow-lg" />
                 </div>
               )}
               
@@ -932,6 +944,12 @@ const Admin: React.FC<{ settings: SiteSettings; setSettings: React.Dispatch<Reac
     }
   };
 
+  const copyLogoCode = () => {
+    if (!settings.logoUrl) return;
+    navigator.clipboard.writeText(settings.logoUrl);
+    alert("로고 코드가 복사되었습니다! 채팅창에 붙여넣어 '고정해줘'라고 말씀해 주세요.");
+  };
+
   const addPortfolio = () => {
     if (!newPf.title || !newPf.beforeImg || !newPf.afterImg) { alert("모든 항목을 입력하고 사진을 선택해 주세요."); return; }
     const item: PortfolioItem = { 
@@ -989,11 +1007,22 @@ const Admin: React.FC<{ settings: SiteSettings; setSettings: React.Dispatch<Reac
                   <div className="p-5 bg-purple-50 rounded-2xl border border-purple-100">
                     <p className="mb-2 font-black text-purple-custom flex items-center gap-2"><Sparkles size={16} /> 업로드 가이드</p>
                     <ul className="list-disc list-inside space-y-2 text-xs md:text-sm text-slate-600 font-medium">
-                      <li>보내주신 캐릭터 만화 이미지를 여기에 등록하세요.</li>
-                      <li>배경이 투명한 파일(PNG)을 사용하시면 배경과 더 잘 어우러집니다.</li>
-                      <li>등록 즉시 메인 화면 글자 옆에 마스코트가 나타납니다!</li>
+                      <li>바탕화면에 있는 사진을 위 상자에 마우스로 끌어다 놓거나 클릭하여 업로드하세요.</li>
+                      <li>업로드 후 아래 버튼을 눌러 코드를 복사하고 AI에게 전달하세요.</li>
                     </ul>
                   </div>
+                  {settings.logoUrl && (
+                    <div className="p-5 bg-slate-900 rounded-2xl border border-slate-700 shadow-2xl">
+                      <p className="text-white font-bold text-xs flex items-center gap-2 mb-3"><Terminal size={14} className="text-sky-400" /> 영구 고정용 코드 추출</p>
+                      <button 
+                        onClick={copyLogoCode}
+                        className="w-full py-3 bg-sky-500 hover:bg-sky-400 text-white font-black rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-lg"
+                      >
+                        <Copy size={14} /> 로고 코드 복사하기
+                      </button>
+                      <p className="text-slate-400 text-[10px] mt-2 text-center">복사한 뒤 채팅창에 붙여넣고 "고정해줘"라고 하세요!</p>
+                    </div>
+                  )}
                   <div className="flex gap-2">
                      <button onClick={() => setSettings({...settings, logoUrl: ''})} className="px-4 py-2 bg-slate-100 text-slate-500 text-xs font-bold rounded-xl hover:bg-slate-200 transition-colors">이미지 초기화</button>
                   </div>

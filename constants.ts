@@ -1,4 +1,3 @@
-
 import { MajorCategory, ServiceCategory, PortfolioItem, ServiceInfo, SiteSettings } from './types';
 
 export const LUCKY_DAYS_DATA: Record<string, number[]> = {
@@ -22,111 +21,105 @@ export const INITIAL_SETTINGS: SiteSettings = {
   instagramLink: "https://instagram.com/linkcleaning",
   primaryColor: "#E3F2FD",
   accentColor: "#8E24AA",
-  logoUrl: "https://api.iconify.design/solar:sparkles-bold-duotone.svg?color=%238e24aa"
+  logoUrl: "data:image/gif;base64,R0lGODlhsQMTBfcAAP//////AP8A//8AAAD//wD/AAAA/wAAAPvSkyMYFfb3x9/dyscACqBYRj86OWUPEVYREmIsLbkDC6AGDZQIDYoJDqgOFX8LD3UMEIUcIHshJJkUG0MaH1EaI3IcLbQfQaUePZoeOYsdNdAgSsUgR+QAf9PT1Nzd3dDR0b2+vqqrq3+6LHmwK3SmKW6cKGiSJl+BJFRtIUhZHjxFGzQ2GcfGhunpvPj4yfHxxerqwOLivNvbuNTUs83Nr5CQhMvLw8XFwYuLiPHx8MDAv4SEg/PveujkeNvZiNbUhtDNg93bjN/dkOHflL+9geTim+rop+/tsbKxhvPxuquqhff1wtzbsevqvs7NptTPa7OvbPn3xsG/m7Sxj8PAnNTTxouESJaRXdPRv93bydDPxS8sGH95TouFVqejhKikhtvZydjWx3FpO5qVeayeV3RsR42Ibn96Y4qJhGhgQI6Ib+fizcnFs7y4qO2/HOC1HOO5JteyMsmrQLujTldOLpySbMG8qrCsncqiG7WQGl5VOaWWaNvVwrGupJ18GYhsGXthGHNsWLawn5mUhqSfkWlSGEpAKFFIMmVeTaqklVZCF5GKe+fm5Ek3FlhQQo2HfCkiFu/JjUY8KzwtFu7Gi+C7g9Ove8WkdOS/iNi2gsysfcCjd7WZcYF7criYbKqMZJyBXDsxI52GZktCNo91VHReRIZzW4JpTGtiWGdSPFlHNT00K19WTXZvaLazsNvZ1zAiFUw7LT40LJyYlaqmoz4vJc/MylJKRTAmIDEkHTsxLK6sq9bU00Y9OZGMii8kIEtDQC0kITEoJbq3tkIoITokHiYcGSogHS8lIl1WVHlycJVSQoJIOnRBNWk8MWI4LlAvJzMgGywdGVpSUGBYVmpiYNx0XdBuWcVpVLljUK5dS6JXRzYtKzsyMExHRq2op1ozLDEmJC0XFD42NWkfGVAcGEMbF6ckHZYiHHcgGssnHzgWFS4ZGEwSEkIUE1AzM1VRUVlWVqKfn8jFxeTi4rm4uP///yH5BAEAAP8ALAAAAACxAxMFAAj/AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXMGPKnEmzps2bOHPq3Mmzp8+fQIMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLNq3cq1q9evYMOKHUu2rNmzaNOqXcu2rdu3cOPKnUu3rt27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sy5s+fPoEOLHk26tOnTqFOrXs26tevXsGPLnk27tu3buHPr3s27t+/fwIMLH068uPHjyJMrX868ufPn0KNLn069uvXr2LNr3869u/fv4MOL/x9Pvrz58+jTq1/Pvr379/Djy59Pv779+/jz69/Pv7///wAGKOCABBZo4IEIJqjgggw26OCDEEYo4YQUVmjhhRhmqOGGHHbo4YcghijiiCRilcCJJ5ao4oo3oehiiizGKKNKL9Y44404hlSjjTn26GNFO+7445BEMhQkj0UmqeSRQirp5JBMIvnklDdGKSWVWJZo5ZVZdgnili96KWaIYLo45pkdlokimmxiqOaabcY54Zswymmng3QmcOeeDObJ558I+gnooAIKSuih/hmK6KL50cnoo42+Cemk9ClK6aXrWYrppublqSenoJbnaaikjjdqqah25+mnqbaK3amuxv9K3aqy1iodrbbm2hyuuvaKHKy+Bjscr8IW+xuxxiarG7LKNlsbs85GCxu0HYEp7bWAAWvRqlFi621d2kbEraPflstWuA6NO6657JaFbkLqxgtnu/R29a5B8uY7b738WnXvQPoGXGe/BEf1r8AIs1rwwkxRm3DCDEesFLMPPyzxxUZxS1DF6mLs8VIch3zkxySDLPLJCpescsYoV7zyy0m1bDHMNBMlM8I15zzUzQHr7PNPPOf789A9BR0v0UjrZPS6STdd09IaOy21TFD/O/XVJVVtNdZcg6Q1uV2HnfXXaopt9khkl3322h+lXSbbcG/ktrVx173t3FbarTdFeOf/vfff6fbNJEoDA76y4INrpKnhFyOeON9HM46x4yNPJLDkElNe+UMzY16w5kFCxLHnBIO++UIik86v6aE3dLLq9LLeOuqpw86u7E3SXrvt3+KeO7yv816u71wW1LLwvRNvpkLHI4+t8mECj7Lzz0O/r/HNUx+t9cvjK7Po0WsfKveFb/y967OLjyn55Qt0c+Cnqz8p+ym7/76Rfss/P/ve38883fp7FP2w5z+ESCqAAuQfwIL2P7UhcFH0+9TSDLi4B/4pglA7SNQsiCgMGs18TOPgoTxIPhF2kITWM+EJUUg8FY6Qhb5z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"
 };
 
 export const INITIAL_SERVICES: ServiceInfo[] = [
   {
-    id: 'professional',
+    id: 'professional-cleaning',
+    title: '프리미엄 입주/이사청소',
+    description: '가장 많은 분들이 선택하시는 링크클린의 대표 서비스입니다. 미세먼지 제거부터 살균까지 공간 전체를 완벽하게 케어합니다.',
     majorCategory: MajorCategory.PROFESSIONAL,
-    title: '전문청소',
-    description: '공간의 목적에 따른 정밀 클리닝으로 최적의 주거/상업 환경을 조성합니다.',
-    subCategories: ['입주청소', '이사청소', '인테리어청소', '거주청소', '외벽&외창청소'],
+    subCategories: ['입주청소', '이사청소', '인테리어청소', '거주청소'],
     process: [
-      { title: '사전 점검', desc: '현장 오염도 측정 및 파손 여부 확인' },
-      { title: '건식 청소', desc: '고성능 진공 장비로 1차 미세먼지 제거' },
-      { title: '습식 세척', desc: '친환경 세제와 고온 스팀으로 고착 오염 제거' },
-      { title: '디테일 케어', desc: '창틀, 배수구, 전등갓 등 구석구석 정밀 클리닝' },
-      { title: '살균 마무리', desc: 'UV 살균 및 피톤치드 향균 코팅 제공' }
+      { title: '현장 진단 및 오염 체크', desc: '공간의 특성과 오염도를 파악하여 최적의 약제와 장비를 선정합니다.' },
+      { title: '구석구석 건식 클리닝', desc: '천장, 벽면, 바닥의 미세먼지와 이물질을 강력한 흡입기로 제거합니다.' },
+      { title: '친환경 세제 습식 클리닝', desc: '독일 키엘사의 친환경 세제를 사용하여 찌든 때와 오염을 말끔히 제거합니다.' },
+      { title: '고온 스팀 살균', desc: '주방, 화장실 등 균이 번식하기 쉬운 곳에 150도 고온 스팀 살균을 실시합니다.' },
+      { title: '자외선 오존 소독', desc: '눈에 보이지 않는 공기 중의 바이러스와 냄새까지 케어합니다.' }
     ],
-    equipment: ['산업용 건습식 청소기', '고온 스팀 살균기', '독일제 키르히 세척기', '친환경 다목적 세정제'],
-    features: ['본사 직영팀 운영', '하루 한 집 정성 시공', '무상 A/S 보장']
+    equipment: ['독일 키엘 친환경 세제', '산업용 고성능 청소기', '고온 스팀기', '오존 발생기'],
+    features: ['100% 본사 직영 시공', '친환경 세제 사용 원칙', '철저한 사후 관리 서비스']
   },
   {
-    id: 'special',
+    id: 'special-cleaning',
+    title: '특수/난청소 솔루션',
+    description: '화재, 고독사, 쓰레기집 등 일반적인 방법으로는 해결하기 어려운 오염을 전문 기술로 복원해 드립니다.',
     majorCategory: MajorCategory.SPECIAL,
-    title: '특수청소',
-    description: '특수한 상황에서의 오염 및 폐기물 처리를 전문 장비 및 인력으로 안전하게 해결합니다.',
     subCategories: ['준공청소', '화재청소', '쓰레기집청소', '유품&고독사청소', '폐기물처리'],
     process: [
-      { title: '특수 상담', desc: '비밀 보장 맞춤 견적 및 작업 범위 확정' },
-      { title: '대량 폐기물 수거', desc: '폐기물법 준수 전문 수거 및 분리 배출' },
-      { title: '심층 오염 제거', desc: '특수 약품을 이용한 강력 세척 및 복원' },
-      { title: '탈취 및 소독', desc: '오존 발생기 및 특수 약품으로 악취 완전 제거' },
-      { title: '원상 복구', desc: '공간 재사용을 위한 최종 멸균 작업' }
+      { title: '긴급 현장 출동 및 상담', desc: '특수 상황에 맞춰 즉각적인 조치와 견적을 안내드립니다.' },
+      { title: '폐기물 분류 및 배출', desc: '체계적인 분류를 통해 폐기물을 합법적으로 처리합니다.' },
+      { title: '특수 약제 세척', desc: '오염원인에 따른 전용 특수 약제로 심한 악취와 오염을 제거합니다.' },
+      { title: '원상 복구 작업', desc: '단순 청소를 넘어 공간이 다시 사용될 수 있도록 복원합니다.' }
     ],
-    equipment: ['오존 탈취기', '고강도 압축 분무기', '산업용 폐기물 장비', '화학 보호 장구'],
-    features: ['24시간 긴급 대응', '철저한 비밀 유지', '원스톱 폐기물 처리']
+    equipment: ['특수 탈취 장비', '화학 오염 제거제', '대형 폐기물 트럭', '방역용 연무기'],
+    features: ['프라이버시 철저 보장', '신속하고 정밀한 현장 대응', '냄새 제거 보증제 실시']
   },
   {
-    id: 'preventive',
+    id: 'appliance-cleaning',
+    title: '가전 케어 마스터',
+    description: '에어컨, 냉장고 내부의 곰팡이와 세균을 완전 분해 세척하여 쾌적한 가전 환경을 만듭니다.',
+    majorCategory: MajorCategory.APPLIANCE,
+    subCategories: ['에어컨청소', '냉장고청소', '후드청소'],
+    process: [
+      { title: '가전 작동 상태 점검', desc: '분해 전 정상 작동 여부를 확인합니다.' },
+      { title: '부품 완전 분해', desc: '전문 기술자가 내부 부품을 하나하나 꼼꼼하게 분해합니다.' },
+      { title: '고압 물 세척', desc: '열교환기와 내부 구석구석을 강력한 고압수로 세척합니다.' },
+      { title: '건조 및 조립', desc: '세척된 부품을 완전히 건조시킨 후 재조립합니다.' }
+    ],
+    equipment: ['가전 전용 고압 세척기', '친환경 가전 세정제', '부품 건조기'],
+    features: ['전문 엔지니어 직접 방문', '가전 고장 보험 가입', '시공 전후 상태 확인']
+  },
+  {
+    id: 'preventive-cleaning',
+    title: '예방 및 시공 케어',
+    description: '새집증후군, 줄눈 시공 등 생활 오염을 예방하고 공간의 내구성을 높이는 전문 시공 서비스입니다.',
     majorCategory: MajorCategory.PREVENTIVE,
-    title: '예방시공',
-    description: '공간의 오염을 방지하고 쾌적함을 오래 유지하기 위한 전문 시공 솔루션입니다.',
     subCategories: ['줄눈시공', '새집증후군시공', '바닥왁스', '방역&해충소독'],
     process: [
-      { title: '표면 전처리', desc: '시공 부위 정밀 세척 및 유분 제거' },
-      { title: '친환경 시공', desc: '저자극 고성능 코팅제/줄눈제 도포' },
-      { title: '경화 대기', desc: '최적의 부착력을 위한 정밀 경화 시간 준수' },
-      { title: '품질 검수', desc: '들뜸 현상 및 기포 유무 육안 확인' },
-      { title: '관리 가이드', desc: '시공 후 유지 관리를 위한 고객 안내' }
+      { title: '시공 부위 클리닝', desc: '시공 전 부착력 강화를 위해 해당 부위를 완벽하게 세척합니다.' },
+      { title: '전문 약제 도포/시공', desc: '최고급 안료와 친환경 약제를 사용하여 시공을 진행합니다.' },
+      { title: '검수 및 마무리', desc: '시공 상태를 정밀하게 확인하고 주의사항을 안내합니다.' }
     ],
-    equipment: ['고급 줄눈 전용기', '베이크아웃 열풍 장비', '포그 방역 분사기', '수입산 프리미엄 코팅제'],
-    features: ['시공 1년 무상 보증', '친환경 인증 제품 사용', '최신 트렌드 색상 보유']
+    equipment: ['독일 줄눈제', '베이크아웃 장비', '초미립자 살포기'],
+    features: ['최고급 정품 자재 사용', '반영구적인 내구성', '공간의 미적 가치 향상']
   },
   {
-    id: 'appliance',
-    majorCategory: MajorCategory.APPLIANCE,
-    title: '가전청소',
-    description: '분해 세척을 통해 보이지 않는 세균과 먼지를 제거하여 가전의 성능과 건강을 지킵니다.',
-    subCategories: ['에어컨청소', '냉장고청소', '쇼파&매트리스', '후드청소'],
-    process: [
-      { title: '정상 작동 확인', desc: '세척 전 기기 가동 및 이상 여부 진단' },
-      { title: '완전 분해', desc: '부품 하나하나 정밀하게 분해 및 나열' },
-      { title: '고압 스팀 세척', desc: '보이지 않는 냉각핀, 팬 사이 곰팡이 제거' },
-      { title: '약품 중화/건조', desc: '잔류 세제 제거를 위한 헹굼 및 완전 건조' },
-      { title: '재조립 및 검수', desc: '원상 복구 후 최종 정상 가동 확인' }
-    ],
-    equipment: ['가전 전용 고압 세척기', '부품 전용 세척 대대', '핀 전용 정밀 솔', '특수 친환경 약품'],
-    features: ['전문 가전 케어 마스터 시공', '파손 보험 가입', '시공 전후 사진 제공']
-  },
-  {
-    id: 'management',
+    id: 'management-cleaning',
+    title: '프리미엄 정기 관리',
+    description: '건물, 사무실, 별장 등을 정기적으로 방문하여 최상의 컨디션을 유지해 드리는 맞춤형 관리입니다.',
     majorCategory: MajorCategory.MANAGEMENT,
-    title: '프리미엄 관리',
-    description: '제주 세컨하우스와 별장, 사무실 공간을 정기적으로 케어하여 언제나 쾌적한 상태를 유지해 드립니다.',
-    subCategories: ['별장관리', '사무실관리', '건물관리', '계단관리'],
+    subCategories: ['별장관리', '정기관리', '건물관리', '사무실관리', '계단관리'],
     process: [
-      { title: '맞춤형 스케줄링', desc: '고객 방문 주기 및 사용 용도에 따른 케어 계획 수립' },
-      { title: '정기 순찰 케어', desc: '부재 시 환기, 습도 조절, 시설물 이상 점검' },
-      { title: '정밀 정기 청소', desc: '약속된 주기별 내부 딥 클리닝 진행' },
-      { title: '긴급 방문 지원', desc: '고객 입도 전 최상의 상태 세팅 지원' },
-      { title: '현황 리포트', desc: '작업 내용 및 현장 사진 모바일 보고' }
+      { title: '맞춤형 관리 플랜 수립', desc: '공간의 용도와 요구 사항에 맞는 정기 방문 일정을 잡습니다.' },
+      { title: '전담 팀 배치', desc: '해당 공간을 잘 이해하는 전담 인력을 배치하여 일관된 품질을 제공합니다.' },
+      { title: '정기 점검 보고', desc: '매 시공 후 작업 내용과 특이사항을 고객님께 보고드립니다.' }
     ],
-    equipment: ['스마트 도어락 연동 시스템', '원격 습도 측정 장비', '정기 케어 전용 키트'],
-    features: ['전담 매니저 매칭', '제주 전역 커버리지', '비대면 관리 서비스']
+    equipment: ['전담 차량 및 장비', '맞춤형 관리 매뉴얼'],
+    features: ['체계적인 정기 방문 시스템', '장기 계약 할인 혜택', '365일 비대면 관리 서비스 가능']
   }
 ];
 
 export const INITIAL_PORTFOLIO: PortfolioItem[] = [
   {
     id: 'p1',
-    title: '제주시 노형동 신축 아파트 입주청소',
-    majorCategory: MajorCategory.PROFESSIONAL,
+    title: '제주 연동 프리미엄 아파트 입주청소',
     category: '입주청소',
-    beforeImg: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800',
-    afterImg: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&q=80&w=800',
-    description: '공사 후 남겨진 미세 먼지와 창틀의 시멘트 가루를 완벽하게 제거하고 친환경 살균 세척을 진행했습니다.',
-    date: '2025-06-15'
+    majorCategory: MajorCategory.PROFESSIONAL,
+    beforeImg: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1000',
+    afterImg: 'https://images.unsplash.com/photo-1527352723443-c47c82761e05?auto=format&fit=crop&q=80&w=1000',
+    description: '인테리어 후 미세먼지와 보양지를 완벽하게 제거하고 친환경 살균 소독을 완료했습니다.',
+    date: '2025. 12. 10'
   },
   {
     id: 'p2',
-    title: '연동 오피스텔 원룸 쓰레기집청소',
+    title: '서귀포 신축 빌라 준공 청소 현장',
+    category: '준공청소',
     majorCategory: MajorCategory.SPECIAL,
-    category: '쓰레기집청소',
-    beforeImg: 'https://images.unsplash.com/photo-1598425237654-4fc758e50a93?auto=format&fit=crop&q=80&w=1200',
-    afterImg: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=1200',
-    description: '심각하게 방치된 생활 쓰레기와 오염원을 완벽하게 분리 수거하고, 특수 고온 멸균 소독을 통해 새 집 같은 컨디션으로 복원해 드렸습니다.',
-    date: '2025-10-20'
+    beforeImg: 'https://images.unsplash.com/photo-1581578731548-c64695ce6958?auto=format&fit=crop&q=80&w=1000',
+    afterImg: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&q=80&w=1000',
+    description: '공사 잔여물과 백시멘트 가루를 특수 장비로 말끔히 제거하여 바로 입주 가능한 상태로 만들었습니다.',
+    date: '2025. 12. 15'
   }
 ];
